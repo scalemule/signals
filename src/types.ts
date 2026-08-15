@@ -156,6 +156,8 @@ export interface Signal {
   aggregates?: string[]
   /** For progress kind: 0..1 when determinate. */
   progress?: number
+  /** Caller-supplied dedup key (overrides code+operation+target+scope). */
+  dedupKey?: string
 }
 
 /** What a caller passes in — everything optional except message; defaults come from the registry + resolver. */

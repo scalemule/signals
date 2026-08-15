@@ -89,6 +89,14 @@ describe('hub', () => {
     expect(events.filter((e) => e.name === 'signal.created')).toHaveLength(1)
   })
 
+  it('dedupKey override collapses identical, stacks distinct', () => {
+    const hub = createSignals()
+    hub.error('boom', { code: 'legacy.error', dedupKey: 'legacy|Error|boom' })
+    hub.error('boom', { code: 'legacy.error', dedupKey: 'legacy|Error|boom' })
+    hub.error('other', { code: 'legacy.error', dedupKey: 'legacy|Error|other' })
+    expect(hub.getState().signals).toHaveLength(2)
+  })
+
   it('lifecycle: resolve/dismiss emit and remove; navigation keeps app/system', () => {
     const events: SignalEvent[] = []
     const hub = createSignals({ adapters: [{ name: 't', onEvent: (e) => events.push(e) }] })

@@ -181,17 +181,19 @@ export class SignalHub {
       timestamp: this.now().toISOString(),
       lifecycle: 'active',
       progress: input.progress,
+      dedupKey: input.dedupKey,
     }
   }
 
-  dedupKey(signal: Pick<Signal, 'code' | 'operation' | 'target' | 'scope'>, override?: string): string {
+  dedupKey(signal: Pick<Signal, 'code' | 'operation' | 'target' | 'scope' | 'dedupKey'>, override?: string): string {
     if (override) return override
+    if (signal.dedupKey) return signal.dedupKey
     return [signal.code, signal.operation?.name ?? '', signal.target ? `${signal.target.type}:${signal.target.id}` : '', ownerKeyFor(signal.scope)].join('|')
   }
 
   publish(raw: SignalInput): Signal {
     const signal = this.materialize(raw)
-    const key = this.dedupKey(signal, raw.dedupKey)
+    const key = this.dedupKey(signal)
     const existing = this.state.signals.find((s) => s.lifecycle !== 'resolved' && s.lifecycle !== 'superseded' && this.dedupKey(s) === key)
     if (existing) {
       // Collapse: refresh the existing signal instead of stacking a duplicate.
