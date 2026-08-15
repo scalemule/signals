@@ -1,0 +1,88 @@
+{
+  "name": "@scalemule/signals",
+  "version": "0.0.1",
+  "description": "ScaleMule Signals — contextual application feedback for humans, agents, and systems. Applications emit meaning; Signals decides presentation, agent exposure, and telemetry.",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./react": {
+      "types": "./dist/react/index.d.ts",
+      "import": "./dist/react/index.mjs",
+      "require": "./dist/react/index.js"
+    },
+    "./styles.css": "./dist/styles.css"
+  },
+  "sideEffects": [
+    "*.css"
+  ],
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup && cp src/react/styles.css dist/styles.css && node scripts/fix-react-imports.mjs",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "node -e \"const v=require('./package.json').version; if(!/^0\\.(0|1)\\.\\d+$/.test(v)){console.error('ERR: SDK '+v+' violates patch-only policy (0.0.x or 0.1.x only). See CONTRIBUTING.md SDK versioning section.');process.exit(1)}\" && npm run typecheck && npm test && npm run build",
+    "release": "npm run prepublishOnly && npm publish --access public"
+  },
+  "keywords": [
+    "scalemule",
+    "signals",
+    "feedback",
+    "errors",
+    "notifications",
+    "problem-details",
+    "rfc9457",
+    "accessibility",
+    "agents"
+  ],
+  "author": "ScaleMule Inc. <support@scalemule.com>",
+  "license": "MIT",
+  "homepage": "https://scalemule.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scalemule/signals.git"
+  },
+  "bugs": {
+    "url": "https://github.com/scalemule/signals/issues"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@testing-library/react": "^16.3.2",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "jsdom": "^26.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.4.0",
+    "vitest": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}

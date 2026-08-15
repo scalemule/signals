@@ -1,0 +1,134 @@
+/* @scalemule/signals default styles — semantic tokens only; override the variables to theme. */
+:root {
+  --sm-signal-font: inherit;
+  --sm-signal-radius: 8px;
+  --sm-signal-fg: #1b2430;
+  --sm-signal-muted: #5b6572;
+  --sm-signal-bg: #ffffff;
+  --sm-signal-border: #d9dde3;
+  --sm-signal-shadow: 0 6px 24px rgba(16, 24, 40, 0.12), 0 1px 2px rgba(16, 24, 40, 0.06);
+  --sm-signal-error: #b42318;
+  --sm-signal-error-bg: #fef3f2;
+  --sm-signal-error-border: #fecdca;
+  --sm-signal-warning: #b54708;
+  --sm-signal-warning-bg: #fffaeb;
+  --sm-signal-warning-border: #fedf89;
+  --sm-signal-success: #067647;
+  --sm-signal-success-bg: #ecfdf3;
+  --sm-signal-success-border: #abefc6;
+  --sm-signal-info: #175cd3;
+  --sm-signal-info-bg: #eff8ff;
+  --sm-signal-info-border: #b2ddff;
+  --sm-signal-action-bg: rgba(16, 24, 40, 0.06);
+  --sm-signal-action-fg: currentColor;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --sm-signal-fg: #e6eaee;
+    --sm-signal-muted: #98a2ae;
+    --sm-signal-bg: #1b232b;
+    --sm-signal-border: #2a343e;
+    --sm-signal-error: #f97066;
+    --sm-signal-error-bg: #2b1614;
+    --sm-signal-error-border: #55211c;
+    --sm-signal-warning: #f5a34a;
+    --sm-signal-warning-bg: #2c1f0e;
+    --sm-signal-warning-border: #5a3d13;
+    --sm-signal-success: #4ade80;
+    --sm-signal-success-bg: #10281c;
+    --sm-signal-success-border: #1c4a31;
+    --sm-signal-info: #7ab0f5;
+    --sm-signal-info-bg: #142338;
+    --sm-signal-info-border: #1f3d63;
+    --sm-signal-action-bg: rgba(255, 255, 255, 0.08);
+  }
+}
+
+.sm-signal {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 12px 14px;
+  border: 1px solid var(--sm-signal-border);
+  border-left-width: 3px;
+  border-radius: var(--sm-signal-radius);
+  background: var(--sm-signal-bg);
+  color: var(--sm-signal-fg);
+  font-family: var(--sm-signal-font);
+  font-size: 14px;
+  line-height: 1.45;
+  position: relative;
+}
+.sm-signal--compact { padding: 8px 12px; font-size: 13px; }
+.sm-signal[data-kind='error'] { border-left-color: var(--sm-signal-error); background: var(--sm-signal-error-bg); border-color: var(--sm-signal-error-border); border-left-color: var(--sm-signal-error); }
+.sm-signal[data-kind='warning'] { border-left-color: var(--sm-signal-warning); background: var(--sm-signal-warning-bg); border-color: var(--sm-signal-warning-border); border-left-color: var(--sm-signal-warning); }
+.sm-signal[data-kind='success'] { border-left-color: var(--sm-signal-success); background: var(--sm-signal-success-bg); border-color: var(--sm-signal-success-border); border-left-color: var(--sm-signal-success); }
+.sm-signal[data-kind='info'], .sm-signal[data-kind='progress'], .sm-signal[data-kind='confirmation'] { border-left-color: var(--sm-signal-info); background: var(--sm-signal-info-bg); border-color: var(--sm-signal-info-border); border-left-color: var(--sm-signal-info); }
+.sm-signal__icon { display: inline-flex; margin-top: 2px; flex: none; }
+.sm-signal[data-kind='error'] .sm-signal__icon { color: var(--sm-signal-error); }
+.sm-signal[data-kind='warning'] .sm-signal__icon { color: var(--sm-signal-warning); }
+.sm-signal[data-kind='success'] .sm-signal__icon { color: var(--sm-signal-success); }
+.sm-signal[data-kind='info'] .sm-signal__icon, .sm-signal[data-kind='progress'] .sm-signal__icon, .sm-signal[data-kind='confirmation'] .sm-signal__icon { color: var(--sm-signal-info); }
+.sm-signal__body { flex: 1; min-width: 0; }
+.sm-signal__title { font-weight: 600; margin-bottom: 2px; }
+.sm-signal__message { overflow-wrap: anywhere; }
+.sm-signal__explanation { color: var(--sm-signal-muted); margin-top: 4px; font-size: 13px; }
+.sm-signal__footer { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 8px; }
+.sm-signal__action {
+  appearance: none; border: 1px solid transparent; border-radius: 6px; padding: 4px 10px;
+  font: inherit; font-size: 13px; font-weight: 500; cursor: pointer;
+  background: var(--sm-signal-action-bg); color: var(--sm-signal-action-fg);
+}
+.sm-signal__action--primary { background: var(--sm-signal-fg); color: var(--sm-signal-bg); }
+.sm-signal__action:focus-visible, .sm-signal__close:focus-visible { outline: 2px solid var(--sm-signal-info); outline-offset: 2px; }
+.sm-signal__ref { margin-left: auto; font-size: 11px; color: var(--sm-signal-muted); font-variant-numeric: tabular-nums; user-select: all; }
+.sm-signal__close {
+  appearance: none; background: transparent; border: 0; color: var(--sm-signal-muted); cursor: pointer;
+  padding: 4px; margin: -4px -4px -4px 0; border-radius: 4px; flex: none; display: inline-flex;
+}
+.sm-signal__close:hover { color: var(--sm-signal-fg); background: var(--sm-signal-action-bg); }
+
+/* Notification stack (the only "toast") */
+.sm-signal-stack {
+  position: fixed; z-index: 1000; display: flex; flex-direction: column; gap: 8px;
+  width: min(380px, calc(100vw - 32px)); pointer-events: none;
+}
+.sm-signal-stack[data-position='bottom-right'] { right: 16px; bottom: 16px; }
+.sm-signal-stack[data-position='bottom-left'] { left: 16px; bottom: 16px; }
+.sm-signal-stack[data-position='top-right'] { right: 16px; top: 16px; }
+.sm-signal-stack[data-position='top-center'] { left: 50%; top: 16px; transform: translateX(-50%); }
+.sm-signal--notification { pointer-events: auto; box-shadow: var(--sm-signal-shadow); animation: sm-signal-in 160ms ease-out; }
+@keyframes sm-signal-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+/* Application banner */
+.sm-signal-banner { display: flex; flex-direction: column; gap: 6px; padding: 8px 12px; }
+.sm-signal-banner .sm-signal { border-radius: 6px; }
+
+/* System status bar */
+.sm-signal-statusbar {
+  display: flex; align-items: center; gap: 8px; padding: 6px 12px; font-size: 13px; font-weight: 500;
+  color: var(--sm-signal-bg); background: var(--sm-signal-fg);
+}
+.sm-signal-statusbar[data-kind='error'] { background: var(--sm-signal-error); }
+.sm-signal-statusbar[data-kind='warning'] { background: var(--sm-signal-warning); }
+.sm-signal-statusbar .sm-signal__action { color: inherit; background: rgba(255,255,255,0.18); }
+
+/* Region / form / page */
+.sm-signal-region__messages, .sm-signal-form, .sm-signal-callouts { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+.sm-signal-page { display: flex; justify-content: center; padding: 48px 16px; }
+.sm-signal-page .sm-signal { max-width: 520px; width: 100%; }
+
+/* Field */
+.sm-signal-field { margin-top: 6px; }
+.sm-signal-field__message { display: flex; align-items: flex-start; gap: 6px; margin: 0; font-size: 13px; line-height: 1.4; }
+.sm-signal-field__message[data-kind='error'] { color: var(--sm-signal-error); }
+.sm-signal-field__message[data-kind='warning'] { color: var(--sm-signal-warning); }
+.sm-signal-field__message[data-kind='info'], .sm-signal-field__message[data-kind='success'] { color: var(--sm-signal-muted); }
+.sm-signal-field__message svg { flex: none; margin-top: 2px; }
+
+.sm-signal__spin { animation: sm-signal-spin 1s linear infinite; }
+@keyframes sm-signal-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .sm-signal--notification { animation: none; }
+  .sm-signal__spin { animation-duration: 3s; }
+}
