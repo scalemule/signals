@@ -7,6 +7,7 @@ export type { ProblemLike, NormalizeContext } from './normalize'
 export { SignalHub } from './hub'
 export type { SignalHubOptions, SignalState, Claim, RunMeta } from './hub'
 export { toTelemetryAttributes, consoleAdapter, sentryAdapter, httpAdapter } from './adapters'
+export type { SentryLevel } from './adapters'
 
 import { SignalHub, type SignalHubOptions } from './hub'
 

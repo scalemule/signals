@@ -54,9 +54,11 @@ export function consoleAdapter(opts: { level?: 'debug' | 'info' } = {}): SignalA
  * that are not client-validation, so UI-visible failures show up joined by request.id.
  * Pass the Sentry module (or any object with the same two functions).
  */
+export type SentryLevel = 'fatal' | 'error' | 'warning' | 'log' | 'info' | 'debug'
+
 export function sentryAdapter(sentry: {
-  addBreadcrumb: (b: { category?: string; message?: string; level?: string; data?: Record<string, unknown> }) => void
-  captureMessage?: (msg: string, ctx?: unknown) => unknown
+  addBreadcrumb: (b: { category?: string; message?: string; level?: SentryLevel; data?: Record<string, unknown> }) => void
+  captureMessage?: (msg: string, ctx?: any) => unknown
 }, opts: { captureErrors?: boolean } = {}): SignalAdapter {
   return {
     name: 'sentry',
@@ -65,7 +67,7 @@ export function sentryAdapter(sentry: {
       sentry.addBreadcrumb({
         category: 'signal',
         message: `${event.name} ${event.signal.code}`,
-        level: event.signal.kind === 'error' ? 'error' : event.signal.kind === 'warning' ? 'warning' : 'info',
+        level: (event.signal.kind === 'error' ? 'error' : event.signal.kind === 'warning' ? 'warning' : 'info') as SentryLevel,
         data: attrs,
       })
       if (opts.captureErrors && event.name === 'signal.presented' && event.signal.kind === 'error' && event.signal.source === 'server' && sentry.captureMessage) {
