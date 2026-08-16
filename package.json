@@ -1,6 +1,6 @@
 {
   "name": "@scalemule/signals",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "ScaleMule Signals — contextual application feedback for humans, agents, and systems. Applications emit meaning; Signals decides presentation, agent exposure, and telemetry.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
