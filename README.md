@@ -82,7 +82,9 @@ emits an event to adapters (`consoleAdapter`, `sentryAdapter`, `httpAdapter`, or
 
 **Registry.** `signals.registry.register({ code, kind, scope, recoverability, message, actions, aliases })`
 sets defaults per code so good UX is the default; `aliases` accept legacy identifiers
-(e.g. `SESSION_EXPIRED`) during migration.
+(e.g. `SESSION_EXPIRED`) during migration. The platform defaults live in `registry.json`
+(`import reg from '@scalemule/signals/registry.json'` — usable from any language) and the
+generated catalog is `docs/SIGNAL-CODES.md`.
 
 ## React API
 

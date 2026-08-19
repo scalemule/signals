@@ -1,6 +1,6 @@
 {
   "name": "@scalemule/signals",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "ScaleMule Signals — contextual application feedback for humans, agents, and systems. Applications emit meaning; Signals decides presentation, agent exposure, and telemetry.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -16,7 +16,8 @@
       "import": "./dist/react/index.mjs",
       "require": "./dist/react/index.js"
     },
-    "./styles.css": "./dist/styles.css"
+    "./styles.css": "./dist/styles.css",
+    "./registry.json": "./dist/registry.json"
   },
   "sideEffects": [
     "*.css"
@@ -27,7 +28,7 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "tsup && cp src/react/styles.css dist/styles.css && node scripts/fix-react-imports.mjs",
+    "build": "tsup && cp src/react/styles.css dist/styles.css && cp src/registry.json dist/registry.json && node scripts/fix-react-imports.mjs && node scripts/gen-registry-docs.mjs",
     "dev": "tsup --watch",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
