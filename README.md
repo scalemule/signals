@@ -86,6 +86,54 @@ sets defaults per code so good UX is the default; `aliases` accept legacy identi
 (`import reg from '@scalemule/signals/registry.json'` — usable from any language) and the
 generated catalog is `docs/SIGNAL-CODES.md`.
 
+## Forms: inline validation by default
+
+Use `SignalForm` and `SignalInput` for customer forms. Do not use plain `<form>`
+with native validation bubbles, `reportValidity()`, or browser `alert()` for errors.
+Importing an SDK does not change arbitrary HTML forms: use these components and
+enable the build check below. Server validation and authorization remain required.
+
+```tsx
+import { SignalForm, SignalInput } from '@scalemule/signals/react'
+import '@scalemule/signals/styles.css'
+
+<SignalForm id="create-workspace" onSubmit={createWorkspace}
+  messages={{ name: { required: 'Give your workspace a name.' } }}>
+  <label htmlFor="workspace-name">Workspace name</label>
+  <SignalInput id="workspace-name" name="name" required maxLength={120} />
+  <button>Create workspace</button>
+</SignalForm>
+```
+
+`SignalForm` always renders `noValidate`, checks named controls before calling
+`onSubmit`, publishes field Signals, and focuses the first invalid field. It checks
+required values (including blank text), email/URL format, length, pattern and range.
+`SignalInput` renders the inline error, sets `aria-invalid`/`aria-describedby`, and
+preserves existing hint associations. Editing resolves that field's errors; form
+reset/unmount clears client validation. Values are never included in Signals.
+
+For selects/textareas, pair the named control with `useFieldSignals(name, formId)`
+and `SignalField`; `SignalForm` validates them too. Use `validate={(data) => ({
+fieldName: 'Helpful correction' })}` for additional synchronous business rules.
+Use `hub.report(error, { scope: { type: 'form', formId } })` with
+`SignalFormSummary` for server failures. Every field must have an inline renderer.
+
+Add TypeScript to your application's devDependencies and make the guard part of
+its build/CI, so new plain forms cannot ship:
+
+```json
+{
+  "scripts": {
+    "check:forms": "scalemule-check-forms src",
+    "build": "npm run check:forms && next build"
+  }
+}
+```
+
+The guard parses TSX/JSX and rejects raw forms and constrained raw inputs. It does
+not alter the DOM or disable validation on unrelated forms. It is opt-in per app;
+existing SDK consumers must migrate their forms and enable the check.
+
 ## React API
 
 `SignalProvider`, `SignalRoot`, `SignalBanner`, `SignalStatusBar`, `SignalNotifications`,
