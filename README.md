@@ -105,7 +105,9 @@ import '@scalemule/signals/styles.css'
 </SignalForm>
 ```
 
-`SignalForm` always renders `noValidate`, checks named controls before calling
+`SignalForm` defaults to POST and disables controls until hydration, preventing
+accidental native submissions (including passwords in GET URLs) while scripts load.
+It always renders `noValidate`, checks named controls before calling
 `onSubmit`, publishes field Signals, and focuses the first invalid field. It checks
 required values (including blank text), email/URL format, length, pattern and range.
 `SignalInput` renders the inline error, sets `aria-invalid`/`aria-describedby`, and

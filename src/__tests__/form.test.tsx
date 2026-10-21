@@ -2,11 +2,18 @@ import * as React from 'react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { createSignals } from '../index'
+import { renderToString } from 'react-dom/server'
 import { SignalForm, SignalInput, SignalNotifications, SignalProvider } from '../react'
 
 afterEach(cleanup)
 
 describe('SignalForm', () => {
+  it('prevents native submission before hydration and never defaults credentials to a GET URL', () => {
+    const html = renderToString(<SignalForm id="login"><SignalInput name="password" type="password" required /><button>Sign in</button></SignalForm>)
+    expect(html).toContain('method="post"')
+    expect(html).toContain('<fieldset disabled=""')
+  })
+
   it('blocks an empty workspace, focuses the field, and renders one accessible inline error without native validation', () => {
     const submit = vi.fn((e: React.FormEvent) => e.preventDefault())
     const invalid = vi.fn()

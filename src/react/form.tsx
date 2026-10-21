@@ -32,6 +32,8 @@ function constraintError(field: FormControl): [FormConstraint, string] | undefin
 /** Replaces browser validation bubbles with field Signals; validates before calling onSubmit. */
 export function SignalForm({ id, messages, validate, onSubmit, onChange, onReset, onInvalid, children, ...props }: SignalFormProps) {
   const hub = useSignalHub()
+  const [ready, setReady] = React.useState(false)
+  React.useEffect(() => { setReady(true) }, [])
   const clear = React.useCallback(() => {
     hub.resolveWhere((s) => s.code === validationCode && s.scope.type === 'field' && s.scope.formId === id)
   }, [hub, id])
@@ -39,6 +41,7 @@ export function SignalForm({ id, messages, validate, onSubmit, onChange, onReset
   return (
     <FormContext.Provider value={id}>
       <form
+        method="post"
         {...props}
         id={id}
         noValidate
@@ -74,7 +77,9 @@ export function SignalForm({ id, messages, validate, onSubmit, onChange, onReset
           }
           onSubmit?.(event)
         }}
-      >{children}</form>
+      >
+        <fieldset disabled={!ready} style={{ display: 'contents' }}>{children}</fieldset>
+      </form>
     </FormContext.Provider>
   )
 }
