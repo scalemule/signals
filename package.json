@@ -1,6 +1,6 @@
 {
   "name": "@scalemule/signals",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "ScaleMule Signals — contextual application feedback for humans, agents, and systems. Applications emit meaning; Signals decides presentation, agent exposure, and telemetry.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -25,7 +25,8 @@
   "files": [
     "dist",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "scripts/check-forms.mjs"
   ],
   "scripts": {
     "build": "tsup && cp src/react/styles.css dist/styles.css && cp src/registry.json dist/registry.json && node scripts/fix-react-imports.mjs && node scripts/gen-registry-docs.mjs",
@@ -70,6 +71,7 @@
   },
   "devDependencies": {
     "@testing-library/react": "^16.3.2",
+    "@types/node": "^22.20.5",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "jsdom": "^26.0.0",
@@ -85,5 +87,8 @@
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
+  },
+  "bin": {
+    "scalemule-check-forms": "scripts/check-forms.mjs"
   }
 }
