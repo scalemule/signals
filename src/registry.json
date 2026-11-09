@@ -86,7 +86,9 @@
         "permission_denied",
         "ACCOUNT_SCOPE_REQUIRED",
         "CREDENTIAL_MODE_CONFLICT",
-        "OPERATION_REQUIRES_SERVER_CREDENTIAL"
+        "OPERATION_REQUIRES_SERVER_CREDENTIAL",
+        "SITE_SECRET_BROWSER_USE_FORBIDDEN",
+        "ACTOR_TYPE_FORBIDDEN"
       ],
       "kind": "error",
       "severity": "error",
@@ -168,7 +170,9 @@
         "INVALID_FORMAT",
         "MISSING_FIELD",
         "validation_error",
-        "invalid_input"
+        "invalid_input",
+        "INPUT_INVALID",
+        "IDEMPOTENCY_KEY_REQUIRED"
       ],
       "kind": "error",
       "severity": "error",
@@ -181,8 +185,7 @@
       "aliases": [
         "NOT_FOUND",
         "RESOURCE_NOT_FOUND",
-        "not_found",
-        "RUN_OUTPUT_EXPIRED"
+        "not_found"
       ],
       "kind": "error",
       "severity": "error",
@@ -275,11 +278,36 @@
       }
     },
     {
+      "code": "ai.operation.unavailable",
+      "aliases": [
+        "ACTIVATION_UNAVAILABLE",
+        "AI_OPERATION_UNAVAILABLE"
+      ],
+      "kind": "error",
+      "severity": "error",
+      "recoverability": "admin_action",
+      "persistence": "until_resolved",
+      "title": "AI feature not available",
+      "message": "This AI feature isn’t enabled for this workspace.",
+      "agent": {
+        "permissions": [
+          "observe",
+          "explain"
+        ],
+        "recommendedAction": "escalate",
+        "safeToRetry": false
+      }
+    },
+    {
       "code": "ai.run.failed",
       "aliases": [
         "RUN_ATTEMPTS_EXHAUSTED",
         "RUNTIME_FAILED",
-        "AI_RUN_FAILED"
+        "AI_RUN_FAILED",
+        "LIMIT_EXCEEDED",
+        "APPROVAL_EXPIRED",
+        "QUEUE_EXPIRED",
+        "STREAM_INCOMPLETE"
       ],
       "kind": "error",
       "severity": "error",
@@ -289,6 +317,23 @@
       "message": "We couldn’t complete this request. Try again.",
       "agent": {
         "recommendedAction": "retry",
+        "safeToRetry": true
+      }
+    },
+    {
+      "code": "ai.wait.timeout",
+      "aliases": [
+        "WAIT_TIMEOUT"
+      ],
+      "kind": "info",
+      "severity": "notice",
+      "recoverability": "retry",
+      "persistence": "until_acknowledged",
+      "interruptiveness": "polite",
+      "title": "Still working",
+      "message": "This is taking longer than usual. It continues in the background; check back shortly.",
+      "agent": {
+        "recommendedAction": "wait",
         "safeToRetry": true
       }
     },
@@ -309,10 +354,26 @@
       }
     },
     {
+      "code": "ai.output.expired",
+      "aliases": [
+        "RUN_OUTPUT_EXPIRED",
+        "OUTPUT_UNAVAILABLE"
+      ],
+      "kind": "warning",
+      "severity": "warning",
+      "recoverability": "user_action",
+      "persistence": "until_acknowledged",
+      "title": "AI result no longer available",
+      "message": "This result has expired. Run the request again to get a fresh one.",
+      "agent": {
+        "recommendedAction": "retry",
+        "safeToRetry": true
+      }
+    },
+    {
       "code": "ai.approval.required",
       "aliases": [
-        "AI_APPROVAL_REQUIRED",
-        "waiting_for_approval"
+        "AI_APPROVAL_REQUIRED"
       ],
       "kind": "info",
       "severity": "notice",

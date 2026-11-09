@@ -67,6 +67,41 @@ describe('resolver', () => {
   })
 })
 
+describe('AI facade codes', () => {
+  it('maps every facade error code to a registry entry', () => {
+    const hub = createSignals()
+    const expectations: Array<[string, string]> = [
+      ['INPUT_INVALID', 'validation.invalid_input'],
+      ['IDEMPOTENCY_KEY_REQUIRED', 'validation.invalid_input'],
+      ['IDEMPOTENCY_KEY_REUSED', 'resource.conflict'],
+      ['ACCOUNT_SCOPE_REQUIRED', 'permissions.denied'],
+      ['CREDENTIAL_MODE_CONFLICT', 'permissions.denied'],
+      ['OPERATION_REQUIRES_SERVER_CREDENTIAL', 'permissions.denied'],
+      ['SITE_SECRET_BROWSER_USE_FORBIDDEN', 'permissions.denied'],
+      ['ACTOR_TYPE_FORBIDDEN', 'permissions.denied'],
+      ['ACTIVATION_UNAVAILABLE', 'ai.operation.unavailable'],
+      ['RUN_ATTEMPTS_EXHAUSTED', 'ai.run.failed'],
+      ['LIMIT_EXCEEDED', 'ai.run.failed'],
+      ['APPROVAL_EXPIRED', 'ai.run.failed'],
+      ['QUEUE_EXPIRED', 'ai.run.failed'],
+      ['STREAM_INCOMPLETE', 'ai.run.failed'],
+      ['OUTPUT_SCHEMA_INVALID', 'ai.output.invalid'],
+      ['RUN_OUTPUT_EXPIRED', 'ai.output.expired'],
+      ['OUTPUT_UNAVAILABLE', 'ai.output.expired'],
+      ['WAIT_TIMEOUT', 'ai.wait.timeout'],
+      ['APPROVAL_DENIED', 'ai.approval.denied'],
+      ['AI_APPROVAL_REQUIRED', 'ai.approval.required'],
+      ['BUDGET_EXHAUSTED', 'ai.budget.exhausted'],
+      ['TOOL_OUTCOME_UNCERTAIN', 'ai.tool.uncertain'],
+    ]
+    for (const [alias, code] of expectations) {
+      expect(hub.publish({ code: alias, message: '' }).code, alias).toBe(code)
+    }
+    // run statuses are not error codes
+    expect(hub.publish({ code: 'waiting_for_approval', message: 'x' }).code).toBe('waiting_for_approval')
+  })
+})
+
 describe('hub', () => {
   it('applies registry defaults and aliases', () => {
     const hub = createSignals()
