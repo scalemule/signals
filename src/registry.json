@@ -306,7 +306,7 @@
         "ACTIVATION_CHANGED"
       ],
       "kind": "error",
-      "severity": "warning",
+      "severity": "error",
       "recoverability": "retry",
       "persistence": "until_acknowledged",
       "title": "AI settings changed",
@@ -328,7 +328,7 @@
       "recoverability": "user_action",
       "persistence": "until_acknowledged",
       "title": "That AI option isn’t available",
-      "message": "This AI option isn’t enabled for this workspace. Pick another option.",
+      "message": "This AI option isn’t available for this workspace. Pick another option.",
       "agent": {
         "permissions": [
           "observe",

@@ -21,7 +21,7 @@ copy may change, codes never do. Legacy aliases (backend `SCREAMING_SNAKE`, SDK 
 | `tenant.relocating` | warning | application | retry | This workspace is being moved. Try again shortly. | — | — | `TENANT_RELOCATING` `PLACEMENT_UNAVAILABLE` |
 | `ai.operation.unavailable` | error | — | admin_action | This AI feature isn’t enabled for this workspace. | — | observe/explain | `ACTIVATION_UNAVAILABLE` `AI_OPERATION_UNAVAILABLE` |
 | `ai.operation.changed` | error | — | retry | The AI configuration changed while this request was waiting. Try again. | — | — | `ACTIVATION_CHANGED` |
-| `ai.option.not_allowed` | error | — | user_action | This AI option isn’t enabled for this workspace. Pick another option. | — | observe/explain | `OPTION_NOT_ALLOWED` `OPTION_UNKNOWN` `OFFERING_RETIRED` |
+| `ai.option.not_allowed` | error | — | user_action | This AI option isn’t available for this workspace. Pick another option. | — | observe/explain | `OPTION_NOT_ALLOWED` `OPTION_UNKNOWN` `OFFERING_RETIRED` |
 | `ai.choice.disabled` | error | — | admin_action | This workspace doesn’t allow changing the AI option for this feature. | — | observe/explain | `USER_CHOICE_DISABLED` `ACCOUNT_OVERRIDE_DISABLED` |
 | `ai.run.failed` | error | — | retry | We couldn’t complete this request. Try again. | — | — | `RUN_ATTEMPTS_EXHAUSTED` `RUNTIME_FAILED` `AI_RUN_FAILED` `LIMIT_EXCEEDED` `APPROVAL_EXPIRED` `QUEUE_EXPIRED` `STREAM_INCOMPLETE` |
 | `ai.wait.timeout` | info | — | retry | This is taking longer than usual. It continues in the background; check back shortly. | — | — | `WAIT_TIMEOUT` |
