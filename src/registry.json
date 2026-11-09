@@ -83,7 +83,10 @@
       "aliases": [
         "FORBIDDEN",
         "forbidden",
-        "permission_denied"
+        "permission_denied",
+        "ACCOUNT_SCOPE_REQUIRED",
+        "CREDENTIAL_MODE_CONFLICT",
+        "OPERATION_REQUIRES_SERVER_CREDENTIAL"
       ],
       "kind": "error",
       "severity": "error",
@@ -178,7 +181,8 @@
       "aliases": [
         "NOT_FOUND",
         "RESOURCE_NOT_FOUND",
-        "not_found"
+        "not_found",
+        "RUN_OUTPUT_EXPIRED"
       ],
       "kind": "error",
       "severity": "error",
@@ -193,7 +197,8 @@
         "CONFLICT",
         "ALREADY_EXISTS",
         "conflict",
-        "already_exists"
+        "already_exists",
+        "IDEMPOTENCY_KEY_REUSED"
       ],
       "kind": "error",
       "severity": "error",
@@ -267,6 +272,106 @@
       "agent": {
         "recommendedAction": "wait",
         "safeToRetry": true
+      }
+    },
+    {
+      "code": "ai.run.failed",
+      "aliases": [
+        "RUN_ATTEMPTS_EXHAUSTED",
+        "RUNTIME_FAILED",
+        "AI_RUN_FAILED"
+      ],
+      "kind": "error",
+      "severity": "error",
+      "recoverability": "retry",
+      "persistence": "until_acknowledged",
+      "title": "The AI run didn’t finish",
+      "message": "We couldn’t complete this request. Try again.",
+      "agent": {
+        "recommendedAction": "retry",
+        "safeToRetry": true
+      }
+    },
+    {
+      "code": "ai.output.invalid",
+      "aliases": [
+        "OUTPUT_SCHEMA_INVALID"
+      ],
+      "kind": "error",
+      "severity": "error",
+      "recoverability": "retry",
+      "persistence": "until_acknowledged",
+      "title": "Unexpected AI result",
+      "message": "The AI result didn’t match the expected format. Try again.",
+      "agent": {
+        "recommendedAction": "retry",
+        "safeToRetry": true
+      }
+    },
+    {
+      "code": "ai.approval.required",
+      "aliases": [
+        "AI_APPROVAL_REQUIRED",
+        "waiting_for_approval"
+      ],
+      "kind": "info",
+      "severity": "notice",
+      "recoverability": "user_action",
+      "persistence": "until_resolved",
+      "interruptiveness": "polite",
+      "title": "Waiting for approval",
+      "message": "This action needs an approval before it can continue.",
+      "agent": {
+        "recommendedAction": "wait",
+        "safeToRetry": false
+      }
+    },
+    {
+      "code": "ai.approval.denied",
+      "aliases": [
+        "APPROVAL_DENIED"
+      ],
+      "kind": "warning",
+      "severity": "warning",
+      "recoverability": "none",
+      "persistence": "until_acknowledged",
+      "title": "Approval declined",
+      "message": "The requested action was not approved.",
+      "agent": {
+        "recommendedAction": "escalate",
+        "safeToRetry": false
+      }
+    },
+    {
+      "code": "ai.budget.exhausted",
+      "aliases": [
+        "BUDGET_EXHAUSTED"
+      ],
+      "kind": "warning",
+      "severity": "warning",
+      "recoverability": "admin_action",
+      "persistence": "until_resolved",
+      "title": "AI budget used up",
+      "message": "This workspace’s AI budget for today has been used. Try again tomorrow or raise the limit.",
+      "agent": {
+        "recommendedAction": "wait",
+        "safeToRetry": false
+      }
+    },
+    {
+      "code": "ai.tool.uncertain",
+      "aliases": [
+        "TOOL_OUTCOME_UNCERTAIN"
+      ],
+      "kind": "warning",
+      "severity": "warning",
+      "recoverability": "admin_action",
+      "persistence": "until_acknowledged",
+      "title": "Action outcome unconfirmed",
+      "message": "An action may have been applied but its result couldn’t be confirmed. Check before retrying.",
+      "agent": {
+        "recommendedAction": "escalate",
+        "safeToRetry": false
       }
     }
   ]
