@@ -88,7 +88,9 @@
         "CREDENTIAL_MODE_CONFLICT",
         "OPERATION_REQUIRES_SERVER_CREDENTIAL",
         "SITE_SECRET_BROWSER_USE_FORBIDDEN",
-        "ACTOR_TYPE_FORBIDDEN"
+        "ACTOR_TYPE_FORBIDDEN",
+        "ACCOUNT_ADMIN_REQUIRED",
+        "USER_PRINCIPAL_REQUIRED"
       ],
       "kind": "error",
       "severity": "error",
@@ -289,6 +291,65 @@
       "persistence": "until_resolved",
       "title": "AI feature not available",
       "message": "This AI feature isn’t enabled for this workspace.",
+      "agent": {
+        "permissions": [
+          "observe",
+          "explain"
+        ],
+        "recommendedAction": "escalate",
+        "safeToRetry": false
+      }
+    },
+    {
+      "code": "ai.operation.changed",
+      "aliases": [
+        "ACTIVATION_CHANGED"
+      ],
+      "kind": "error",
+      "severity": "error",
+      "recoverability": "retry",
+      "persistence": "until_acknowledged",
+      "title": "AI settings changed",
+      "message": "The AI configuration changed while this request was waiting. Try again.",
+      "agent": {
+        "recommendedAction": "retry",
+        "safeToRetry": true
+      }
+    },
+    {
+      "code": "ai.option.not_allowed",
+      "aliases": [
+        "OPTION_NOT_ALLOWED",
+        "OPTION_UNKNOWN",
+        "OFFERING_RETIRED"
+      ],
+      "kind": "error",
+      "severity": "error",
+      "recoverability": "user_action",
+      "persistence": "until_acknowledged",
+      "title": "That AI option isn’t available",
+      "message": "This AI option isn’t available for this workspace. Pick another option.",
+      "agent": {
+        "permissions": [
+          "observe",
+          "explain"
+        ],
+        "recommendedAction": "escalate",
+        "safeToRetry": false
+      }
+    },
+    {
+      "code": "ai.choice.disabled",
+      "aliases": [
+        "USER_CHOICE_DISABLED",
+        "ACCOUNT_OVERRIDE_DISABLED"
+      ],
+      "kind": "error",
+      "severity": "error",
+      "recoverability": "admin_action",
+      "persistence": "until_acknowledged",
+      "title": "AI option choice is locked",
+      "message": "This workspace doesn’t allow changing the AI option for this feature.",
       "agent": {
         "permissions": [
           "observe",
